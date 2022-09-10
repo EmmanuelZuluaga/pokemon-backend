@@ -16,7 +16,7 @@ class Server {
     this.port = process.env.PORT;
     this.paths = {
     //  auth: '/api/auth',
-     // users: '/api/users',
+       pokemons: '/api/pokemons',
     };
     //Conectar a DB
    // this.connectDB();
@@ -41,7 +41,7 @@ class Server {
 
   routes() {
   //  this.app.use(this.paths.auth, require('../routes/auth'));
-   // this.app.use(this.paths.users, require('../routes/user'));
+    this.app.use(this.paths.pokemons, require('../routes/pokemon'));
 
     this.app.get('***', (req, res) => {
       res.sendFile(path.join(__dirname, 'public/index.html'));

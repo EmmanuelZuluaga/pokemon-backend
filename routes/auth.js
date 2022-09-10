@@ -7,9 +7,6 @@ const { validateJWT } = require('../middlewares/validate-jwt');
 const router = express();
 router.disable('x-powered-by');
 
-//Login with Google
-router.post('/google', loginGoogle);
-
 //Login
 router.post(
   '/login',
