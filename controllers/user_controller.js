@@ -27,23 +27,34 @@ const getUserById = async (req, res = response) => {
   };
 
   const postUser = async (req, res = response) => {
-    const { name, nickname, password, last_conexion, deviceToken, team} = req.body;
-    const user = new User({
-      nickname,
-      name,
-      team,
-      password,
-      last_conexion,
-      deviceToken,
-    });
-    const salt = bcryptjs.genSaltSync(10);
-    user.password = bcryptjs.hashSync(password, salt);
-    const token = await generateJWT(user.id);
-     await user.save();
-    return res.json({
-      user,
-      token,
-    });
+    const { name, nickname, password, team} = req.body;
+
+    const verifyUser= await User.find({nickname:nickname})
+
+    if(!verifyUser[0]){
+      const user = new User({
+        nickname,
+        name,
+        team,
+        password
+      });
+      const salt = bcryptjs.genSaltSync(10);
+      user.password = bcryptjs.hashSync(password, salt);
+      const token = await generateJWT(user.id);
+       await user.save();
+      return res.json({
+        success:true,
+        user,
+        token,
+      });
+    }else{
+      return res.json({
+       success:false
+      });
+    }
+    
+
+   
   };
   
 

@@ -1,14 +1,10 @@
 const { Schema, model } = require('mongoose');
 
 const UserSchema = Schema({
-  deviceToken: {
-    type: String,
-    required: false,
-    default: '',
-  },
   nickname: {
     type: String,
     require: [true, 'The name is required'],
+    unique: false,
   },
   name: {
     type: String,
@@ -16,7 +12,7 @@ const UserSchema = Schema({
   team: {
     type: String,
     require: [true, 'The team is required'],
-    unique: true,
+    
   },
   password: {
     type: String,
@@ -25,7 +21,8 @@ const UserSchema = Schema({
  
   lastConexion: {
     type: Date,
-    require: false
+    require: false,
+    default: Date.now
   },
 });
 
