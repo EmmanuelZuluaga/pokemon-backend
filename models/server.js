@@ -15,8 +15,9 @@ class Server {
     this.app.use(express.urlencoded({ extended: true }));
     this.port = process.env.PORT;
     this.paths = {
-    //  auth: '/api/auth',
+       auth: '/api/auth',
        pokemons: '/api/pokemons',
+       user: '/api/user',
     };
     //Conectar a DB
    // this.connectDB();
@@ -40,9 +41,9 @@ class Server {
   }
 
   routes() {
-  //  this.app.use(this.paths.auth, require('../routes/auth'));
+    this.app.use(this.paths.auth, require('../routes/auth'));
     this.app.use(this.paths.pokemons, require('../routes/pokemon'));
-
+    this.app.use(this.paths.pokemons, require('../routes/user'));
     this.app.get('***', (req, res) => {
       res.sendFile(path.join(__dirname, 'public/index.html'));
     });
