@@ -10,7 +10,7 @@ router.disable('x-powered-by');
 router.post(
   '/login',
   [
-    check('email', 'Error in email Field').isEmail(),
+    check('nickname', 'Error in nickname Field').isEmail(),
     check('password', 'Password is required').not().isEmpty()
   ],
   login

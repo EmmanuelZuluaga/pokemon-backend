@@ -5,31 +5,28 @@ const { generateJWT } = require('../helpers/generate-jwt');
 
 
 const login = async (req, res = response) => {
-  const { email, password } = req.body;
+  const { nickname, password } = req.body;
   try {
-    //Verificar si email existe
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ nickname });
     if (!user) {
       return res.status(400).json({
-        msg: '¡Correo electrónico no registrado!',
+        success:false,
+        msg: 'Nickname not registered',
       });
     }
-    //Si el usuario está activo
-    if (!user.status) {
-      return res.status(400).json({
-        msg: '¡El usuario no se encuentra activo!',
-      });
-    }
+
     //Verificar contraseña
     const validPassword = bcryptjs.compareSync(password, user.password);
     if (!validPassword) {
       return res.status(400).json({
-        msg: '¡Contraseña incorrecta!',
+        success:false,
+        msg: 'Incorrect password',
       });
     }
     //generar JWT
     const token = await generateJWT(user.id);
     return res.json({
+      success:true,
       user,
       token,
     });

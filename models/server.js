@@ -1,9 +1,11 @@
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
+const JwtStrategy=require("../strategies/jwt.strategy")
 
 const { dbConnection } = require('../database/config');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 
 class Server {
   constructor() {
@@ -20,7 +22,7 @@ class Server {
        user: '/api/user',
     };
     //Conectar a DB
-   // this.connectDB();
+   this.connectDB();
     //Middlewares
    this.middlewares();
     //Rutas de mi aplicación
@@ -38,12 +40,15 @@ class Server {
     this.app.use(express.json());
     //Directorio público
     this.app.use(express.static('public'));
+    passport.use(JwtStrategy);
+    this.app.use(passport.initialize());
+    
   }
 
   routes() {
     this.app.use(this.paths.auth, require('../routes/auth'));
     this.app.use(this.paths.pokemons, require('../routes/pokemon'));
-    this.app.use(this.paths.pokemons, require('../routes/user'));
+    this.app.use(this.paths.user, require('../routes/user'));
     this.app.get('***', (req, res) => {
       res.sendFile(path.join(__dirname, 'public/index.html'));
     });
@@ -51,7 +56,7 @@ class Server {
 
   listen() {
     this.app.listen(this.port, () => {
-      console.log('Servidor corriendo en puerto', this.port);
+      console.log('Server running in the port', this.port);
     });
   }
 }
