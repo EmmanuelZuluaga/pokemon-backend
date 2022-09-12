@@ -5,11 +5,11 @@ const axios = require('axios');
 const getPaginationPokemons = async (req = request, res = response) => {
 
     const { initNumPokemos } = req.params;
-    let finalNumPokemos= new Number(initNumPokemos)+10;
+    let finalNumPokemos= Number(initNumPokemos)+10;
     let listPokemons=[];
 
     try{
-        for(let i=1;i<=finalNumPokemos;i++){
+        for(let i=initNumPokemos;i<=finalNumPokemos;i++){
             await axios.get(`https://pokeapi.co/api/v2/pokemon/${i}/`)
             .then(responseAxios => {
                 listPokemons.push(responseAxios.data);     

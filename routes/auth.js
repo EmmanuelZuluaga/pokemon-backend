@@ -1,6 +1,6 @@
 const express = require('express');
 const { check } = require('express-validator');
-const { login, validateUserToken, recoverPassword, changePassword, loginGoogle } = require('../controllers/auth');
+const { login, validateUserToken } = require('../controllers/auth');
 const { validateFields } = require('../middlewares/validate-fields');
 const { validateJWT } = require('../middlewares/validate-jwt');
 
@@ -20,17 +20,5 @@ router.post(
 
 router.get('/', [validateJWT], validateUserToken);
 
-router.put('/changePassword/:id', changePassword);
-
-// Route recover password
-router.post(
-  '/recoverPassword',
-  [
-    check('email', 'Formato incorrecto de email').isEmail(),
-    check('email', 'El email es obligatorio').not().isEmpty(),
-    validateFields,
-  ],
-  recoverPassword
-);
 
 module.exports = router;
